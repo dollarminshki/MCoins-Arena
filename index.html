@@ -173,5 +173,150 @@ document.getElementById('reset').addEventListener('click',()=>{
 
 render();
 </script>
+  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<section id="account-panel" style="max-width:430px;margin:25px auto;padding:22px;background:#111a2b;border:1px solid #27334a;border-radius:18px;color:#f5f7ff;font-family:Arial,sans-serif">
+  <h2 style="margin-top:0">🔐 Player Account</h2>
+  <p style="color:#aebbd1;font-size:14px">Create an account or sign in to MCoins Arena.</p>
+
+  <label for="account-email">Email address</label>
+  <input id="account-email" type="email" autocomplete="email" placeholder="you@example.com"
+    style="width:100%;padding:12px;margin:8px 0 14px;background:#080d19;color:white;border:1px solid #30415d;border-radius:8px">
+
+  <label for="account-password">Password</label>
+  <input id="account-password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters"
+    style="width:100%;padding:12px;margin:8px 0 14px;background:#080d19;color:white;border:1px solid #30415d;border-radius:8px">
+
+  <button id="signup-button" type="button" style="width:100%;padding:12px;background:#41e6b2;border:0;border-radius:9px;font-weight:bold;cursor:pointer">Create Account</button>
+  <button id="signin-button" type="button" style="width:100%;padding:12px;margin-top:9px;background:#202d43;color:white;border:0;border-radius:9px;font-weight:bold;cursor:pointer">Sign In</button>
+  <button id="signout-button" type="button" hidden style="width:100%;padding:12px;margin-top:9px;background:#202d43;color:white;border:0;border-radius:9px;font-weight:bold;cursor:pointer">Sign Out</button>
+
+  <p id="account-status" role="status" aria-live="polite" style="font-size:13px;color:#aebbd1;line-height:1.6"></p>
+</section>
+
+<script>
+(() => {
+  const PROJECT_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
+  const PUBLISHABLE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+  const status = document.getElementById("account-status");
+  const signup = document.getElementById("signup-button");
+  const signin = document.getElementById("signin-button");
+  const signout = document.getElementById("signout-button");
+
+  if (!window.supabase ||
+      PROJECT_URL.includes("PASTE_") ||
+      PUBLISHABLE_KEY.includes("PASTE_")) {
+    status.textContent = "Setup needed: add your Supabase Project URL and publishable key to the website code.";
+    signup.disabled = true;
+    signin.disabled = true;
+    return;
+  }
+
+  const client = window.supabase.createClient(PROJECT_URL, PUBLISHABLE_KEY);
+
+  function showStatus(message) {
+    status.textContent = message;
+  }
+
+  async function refreshSession() {
+    const { data, error } = await client.auth.getSession();
+    if (error) {
+      showStatus(error.message);
+      return;
+    }
+
+    const user = data.session?.user;
+    signup.hidden = Boolean(user);
+    signin.hidden = Boolean(user);
+    signout.hidden = !user;
+
+    if (user) {
+      showStatus("Signed in as " + user.email);
+    } else {
+      showStatus("You're not signed in yet.");
+    }
+  }
+
+  signup.addEventListener("click", async () => {
+    const email = document.getElementById("account-email").value.trim();
+    const password = document.getElementById("account-password").value;
+
+    if (!email || password.length < 8) {
+      showStatus("Enter a valid email and a password of at least 8 characters.");
+      return;
+    }
+
+    signup.disabled = true;
+    showStatus("Creating your account...");
+
+    const { data, error } = await client.auth.signUp({
+      email,
+      password
+    });
+
+    signup.disabled = false;
+
+    if (error) {
+      showStatus(error.message);
+      return;
+    }
+
+    if (data.session) {
+      showStatus("Account created! You're signed in.");
+    } else {
+      showStatus("Account request received. Check your email for a confirmation link if required.");
+    }
+
+    await refreshSession();
+  });
+
+  signin.addEventListener("click", async () => {
+    const email = document.getElementById("account-email").value.trim();
+    const password = document.getElementById("account-password").value;
+
+    if (!email || !password) {
+      showStatus("Enter your email and password.");
+      return;
+    }
+
+    signin.disabled = true;
+    showStatus("Signing in...");
+
+    const { error } = await client.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    signin.disabled = false;
+
+    if (error) {
+      showStatus(error.message);
+      return;
+    }
+
+    await refreshSession();
+  });
+
+  signout.addEventListener("click", async () => {
+    const { error } = await client.auth.signOut();
+
+    if (error) {
+      showStatus(error.message);
+      return;
+    }
+
+    showStatus("You've signed out.");
+    await refreshSession();
+  });
+
+  client.auth.onAuthStateChange(() => {
+    refreshSession();
+  });
+
+  refreshSession();
+})();
+</script>
+
 </body>
 </html>
