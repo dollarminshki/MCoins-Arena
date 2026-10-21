@@ -2,148 +2,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MCoins Arena | Play. Compete. Win.</title>
-  <meta name="description" content="Welcome to MCoins Arena, your home for friendly online Tic-Tac-Toe battles.">
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #080d19;
-      color: #f5f7ff;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 22px 7%;
-      border-bottom: 1px solid #202a40;
-    }
-    .logo { font-size: 23px; font-weight: 800; }
-    .logo span { color: #41e6b2; }
-    .status { color: #aebbd1; font-size: 13px; }
-    main {
-      max-width: 1050px;
-      margin: auto;
-      padding: 65px 22px;
-      text-align: center;
-    }
-    .tag {
-      display: inline-block;
-      padding: 9px 14px;
-      border: 1px solid #245c52;
-      border-radius: 30px;
-      color: #66f0c6;
-      background: #102b29;
-      font-size: 13px;
-    }
-    h1 {
-      font-size: clamp(38px, 7vw, 70px);
-      line-height: 1.08;
-      margin: 25px 0 18px;
-    }
-    h1 span { color: #41e6b2; }
-    .intro {
-      max-width: 590px;
-      margin: 0 auto;
-      color: #aebbd1;
-      line-height: 1.8;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      margin-top: 50px;
-      text-align: left;
-    }
-    .card {
-      padding: 25px;
-      background: #111a2b;
-      border: 1px solid #27334a;
-      border-radius: 18px;
-    }
-    .symbol { font-size: 32px; }
-    h2 { font-size: 20px; }
-    .card p { color: #aebbd1; line-height: 1.65; font-size: 14px; }
-    button {
-      width: 100%;
-      padding: 13px;
-      border: 0;
-      border-radius: 10px;
-      background: #41e6b2;
-      color: #07130f;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .secondary {
-      background: #202d43;
-      color: #f5f7ff;
-      margin-top: 8px;
-    }
-    .notice {
-      margin: 35px auto 0;
-      padding: 15px;
-      max-width: 680px;
-      border-radius: 12px;
-      background: #151d2d;
-      color: #aebbd1;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-    footer {
-      padding: 25px;
-      text-align: center;
-      color: #7f8da5;
-      border-top: 1px solid #202a40;
-      font-size: 12px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCoins Arena | Play. Compete. Win.</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#080d19;color:#f5f7ff;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 7%;border-bottom:1px solid #202a40}
+.logo{font-size:22px;font-weight:900}.logo span,h1 span{color:#41e6b2}
+.status{font-size:12px;color:#41e6b2}
+main{max-width:850px;margin:auto;padding:35px 18px 55px;text-align:center}
+.tag{display:inline-block;padding:8px 13px;border:1px solid #245c52;border-radius:30px;background:#102b29;color:#66f0c6;font-size:12px}
+h1{font-size:clamp(34px,7vw,56px);margin:20px 0 10px}
+.intro{color:#aebbd1;line-height:1.7;max-width:550px;margin:0 auto 28px}
+.panel{max-width:430px;margin:25px auto;background:#111a2b;border:1px solid #27334a;border-radius:20px;padding:22px}
+.score{display:flex;justify-content:space-around;margin-bottom:20px;color:#aebbd1;font-size:13px}
+.score strong{display:block;font-size:24px;color:#f5f7ff;margin-top:6px}
+#status{font-weight:bold;min-height:24px;margin:15px 0;color:#66f0c6}
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;width:100%;max-width:330px;margin:auto}
+.cell{aspect-ratio:1;background:#1b2940;border:1px solid #30415d;border-radius:13px;color:#41e6b2;font-size:clamp(36px,10vw,55px);font-weight:900;cursor:pointer}
+.cell:disabled{cursor:default}
+.cell.o{color:#a78bfa}
+button.action{width:100%;margin-top:17px;padding:13px;border:0;border-radius:10px;background:#41e6b2;color:#07130f;font-weight:800;font-size:15px;cursor:pointer}
+button.action.secondary{background:#202d43;color:white;margin-top:9px}
+.note{max-width:560px;margin:22px auto 0;background:#151d2d;border-radius:12px;padding:14px;color:#aebbd1;font-size:12px;line-height:1.7}
+footer{text-align:center;border-top:1px solid #202a40;padding:23px;color:#7f8da5;font-size:12px}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">MCOINS <span>ARENA</span></div>
-    <div class="status">● DEMO VERSION</div>
-  </header>
+<header>
+  <div class="logo">MCOINS <span>ARENA</span></div>
+  <div class="status">● DEMO GAME</div>
+</header>
+<main>
+  <div class="tag">⚡ YOUR NEXT MATCH STARTS HERE</div>
+  <h1>Think fast.<br><span>Play smart.</span></h1>
+  <p class="intro">Challenge the computer in a classic Tic-Tac-Toe battle. Every move counts!</p>
 
-  <main>
-    <div class="tag">⚡ YOUR NEXT MATCH STARTS HERE</div>
-    <h1>Think fast.<br><span>Play smart.</span></h1>
-    <p class="intro">
-      Challenge the computer, sharpen your strategy, and get ready
-      for friendly battles with people around the world.
-    </p>
-
-    <section class="cards">
-      <div class="card">
-        <div class="symbol">🤖</div>
-        <h2>Play vs AI</h2>
-        <p>Practice your tactics against a computer opponent.</p>
-        <button onclick="alert('The playable game is coming in our next build step!')">Play Computer</button>
-      </div>
-
-      <div class="card">
-        <div class="symbol">👥</div>
-        <h2>Friend Matches</h2>
-        <p>Online friend rooms are planned for a future demo update.</p>
-        <button class="secondary" onclick="alert('Friend rooms are coming in a later step!')">Friend Match</button>
-      </div>
-
-      <div class="card">
-        <div class="symbol">🪙</div>
-        <h2>Test MCoins</h2>
-        <p>Explore the demo with test coins that have no cash value.</p>
-        <button class="secondary" onclick="alert('Demo wallet features are coming in a later step!')">Demo Wallet</button>
-      </div>
-    </section>
-
-    <div class="notice">
-      Demo only. Test MCoins cannot be purchased, redeemed, or withdrawn.
-      No real-money betting or cash prizes are available.
+  <section class="panel">
+    <div class="score">
+      <div>You · X<strong id="wins">0</strong></div>
+      <div>Draws<strong id="draws">0</strong></div>
+      <div>AI · O<strong id="losses">0</strong></div>
     </div>
-  </main>
+    <div id="status" aria-live="polite">Your turn! Choose a square.</div>
+    <div class="board" id="board" aria-label="Tic-Tac-Toe board"></div>
+    <button class="action" id="restart">↻ New Round</button>
+    <button class="action secondary" id="reset">Reset Scores</button>
+  </section>
 
-  <footer>© 2026 MCoins Arena · Built for friendly competition</footer>
+  <div class="note">Demo only. Test MCoins have no cash value and cannot be purchased, redeemed, or withdrawn.</div>
+</main>
+<footer>© 2026 MCoins Arena · Friendly competition starts here</footer>
+
+<script>
+const boardElement=document.getElementById('board');
+const statusElement=document.getElementById('status');
+let board=Array(9).fill('');
+let finished=false;
+let scores={wins:0,draws:0,losses:0};
+
+const lines=[
+[0,1,2],[3,4,5],[6,7,8],
+[0,3,6],[1,4,7],[2,5,8],
+[0,4,8],[2,4,6]
+];
+
+function getWinner(cells){
+  for(const line of lines){
+    const [a,b,c]=line;
+    if(cells[a] && cells[a]===cells[b] && cells[a]===cells[c]){
+      return cells[a];
+    }
+  }
+  return cells.every(Boolean)?'draw':null;
+}
+
+function render(){
+  boardElement.innerHTML='';
+  board.forEach((mark,index)=>{
+    const cell=document.createElement('button');
+    cell.className='cell'+(mark==='O'?' o':'');
+    cell.textContent=mark;
+    cell.setAttribute('aria-label',mark?`Square ${index+1}: ${mark}`:`Square ${index+1}, empty`);
+    cell.disabled=Boolean(mark)||finished;
+    cell.addEventListener('click',()=>playerMove(index));
+    boardElement.appendChild(cell);
+  });
+  document.getElementById('wins').textContent=scores.wins;
+  document.getElementById('draws').textContent=scores.draws;
+  document.getElementById('losses').textContent=scores.losses;
+}
+
+function finishIfNeeded(){
+  const result=getWinner(board);
+  if(!result)return false;
+  finished=true;
+  if(result==='X'){
+    scores.wins++;
+    statusElement.textContent='🎉 You win! Great move!';
+  }else if(result==='O'){
+    scores.losses++;
+    statusElement.textContent='🤖 The AI wins this round. Try again!';
+  }else{
+    scores.draws++;
+    statusElement.textContent='🤝 It is a draw!';
+  }
+  render();
+  return true;
+}
+
+function playerMove(index){
+  if(finished||board[index])return;
+  board[index]='X';
+  if(finishIfNeeded())return;
+  statusElement.textContent='AI is thinking...';
+  render();
+  window.setTimeout(aiMove,350);
+}
+
+function minimax(cells,isAI){
+  const result=getWinner(cells);
+  if(result==='O')return 10;
+  if(result==='X')return -10;
+  if(result==='draw')return 0;
+  let best=isAI?-Infinity:Infinity;
+  for(let i=0;i<9;i++){
+    if(cells[i])continue;
+    cells[i]=isAI?'O':'X';
+    const score=minimax(cells,!isAI);
+    cells[i]='';
+    best=isAI?Math.max(best,score):Math.min(best,score);
+  }
+  return best;
+}
+
+function aiMove(){
+  if(finished)return;
+  let bestScore=-Infinity;
+  let choices=[];
+  for(let i=0;i<9;i++){
+    if(board[i])continue;
+    board[i]='O';
+    const score=minimax(board,false);
+    board[i]='';
+    if(score>bestScore){bestScore=score;choices=[i]}
+    else if(score===bestScore){choices.push(i)}
+  }
+  if(choices.length){
+    board[choices[Math.floor(Math.random()*choices.length)]]='O';
+  }
+  if(!finishIfNeeded()){
+    statusElement.textContent='Your turn! Choose a square.';
+    render();
+  }
+}
+
+function newRound(){
+  board=Array(9).fill('');
+  finished=false;
+  statusElement.textContent='Your turn! Choose a square.';
+  render();
+}
+
+document.getElementById('restart').addEventListener('click',newRound);
+document.getElementById('reset').addEventListener('click',()=>{
+  scores={wins:0,draws:0,losses:0};
+  newRound();
+});
+
+render();
+</script>
 </body>
 </html>
